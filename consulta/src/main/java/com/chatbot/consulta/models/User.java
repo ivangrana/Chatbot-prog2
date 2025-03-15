@@ -33,8 +33,14 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List roles = new ArrayList<>();
-        if (userType.equals(UserType.ADMIN)) roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        List<SimpleGrantedAuthority> roles = new ArrayList<>();
+
+        if(userType == UserType.ADMIN) roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (userType.equals(UserType.PACIENTE)) roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
+        if (userType.equals(UserType.ADMIN_PACIENTE)) {
+            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
+        }
         return roles;
     }
 
