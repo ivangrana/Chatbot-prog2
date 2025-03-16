@@ -4,14 +4,14 @@ import lombok.Getter;
 
 
 @Getter
-public enum UserType {
+public enum TipoUsuario {
     ADMIN(2),
     PACIENTE(4),
     ADMIN_PACIENTE(6);
 
     private final int id;
 
-    private UserType(int id){
+    private TipoUsuario(int id){
         this.id = id;
     }
 }

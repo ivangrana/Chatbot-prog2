@@ -11,6 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Paciente extends User{
+public class Paciente extends User {
 
 }

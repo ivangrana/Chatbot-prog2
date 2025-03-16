@@ -1,6 +1,6 @@
 package com.chatbot.consulta.models;
 
-import com.chatbot.consulta.enums.UserType;
+import com.chatbot.consulta.enums.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +27,7 @@ public class User implements UserDetails {
     @Column(name = "login", updatable = true)
     private String login;
     @Column(name = "user_type")
-    private UserType userType;
+    private TipoUsuario userType;
     @Column(name = "password")
     private String password;
 
@@ -35,9 +35,9 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> roles = new ArrayList<>();
 
-        if(userType == UserType.ADMIN) roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        if (userType.equals(UserType.PACIENTE)) roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
-        if (userType.equals(UserType.ADMIN_PACIENTE)) {
+        if(userType == TipoUsuario.ADMIN) roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (userType.equals(TipoUsuario.PACIENTE)) roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
+        if (userType.equals(TipoUsuario.ADMIN_PACIENTE)) {
             roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
         }
