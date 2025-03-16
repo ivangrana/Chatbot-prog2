@@ -28,7 +28,6 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
-
     //autenticadas
     @PostMapping("/paciente")
     public ResponseEntity createMedico(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto){
@@ -62,7 +61,7 @@ public class AuthenticationController {
         //TODO - pegar usuario
         //TODO - verificar o tipo de usuario
         //TODO - deletar primeiro tabela de tipo de usuario e depois usuario
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body();
+        return null;
     }
     @PutMapping("/medico")
     public ResponseEntity<BaseResponseDto> createMedicoUsuarioExistente(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto,
@@ -71,7 +70,7 @@ public class AuthenticationController {
         //TODO - pegar usuario
         //TODO - verificar o tipo de usuario
         //TODO - se nao existir o tipo de usuario, cria-lo, caso contrario, retornar mensagem de usuario ja é medico
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body();
+        return null;
     }
     @PutMapping("/paciente")
     public ResponseEntity<BaseResponseDto> createPacienteUsuarioExistente(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto,
@@ -80,6 +79,6 @@ public class AuthenticationController {
         //TODO - pegar usuario
         //TODO - verificar o tipo de usuario
         //TODO - se nao existir o tipo de usuario, cria-lo, caso contrario, retornar mensagem de usuario ja é paciente
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body();
+        return null;
     }
 }
