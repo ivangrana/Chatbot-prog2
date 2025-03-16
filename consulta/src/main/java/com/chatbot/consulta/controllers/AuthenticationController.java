@@ -53,7 +53,33 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         // 5. Retorna o token gerado em um objeto de resposta
         var token = tokenService.generateToken((User) auth.getPrincipal());
-
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BaseResponseDto(new LoginResponse(token)));
+    }
+    @DeleteMapping("/user")
+    public ResponseEntity<BaseResponseDto> deleteUser(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto,
+                                                      @RequestHeader("Authorization") String tokenHeader){
+        //TODO - decodificar token
+        //TODO - pegar usuario
+        //TODO - verificar o tipo de usuario
+        //TODO - deletar primeiro tabela de tipo de usuario e depois usuario
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body();
+    }
+    @PutMapping("/medico")
+    public ResponseEntity<BaseResponseDto> createMedicoUsuarioExistente(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto,
+                                                      @RequestHeader("Authorization") String tokenHeader){
+        //TODO - decodificar token
+        //TODO - pegar usuario
+        //TODO - verificar o tipo de usuario
+        //TODO - se nao existir o tipo de usuario, cria-lo, caso contrario, retornar mensagem de usuario ja é medico
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body();
+    }
+    @PutMapping("/paciente")
+    public ResponseEntity<BaseResponseDto> createPacienteUsuarioExistente(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto,
+                                                                       @RequestHeader("Authorization") String tokenHeader){
+        //TODO - decodificar token
+        //TODO - pegar usuario
+        //TODO - verificar o tipo de usuario
+        //TODO - se nao existir o tipo de usuario, cria-lo, caso contrario, retornar mensagem de usuario ja é paciente
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body();
     }
 }
