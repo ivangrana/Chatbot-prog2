@@ -21,7 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 @CrossOrigin(origins = "http://0.0.0.0:8081/")
 @RestController
 @RequestMapping("auth")
-public class AuthenticationController {
+public class AutenticacaoController {
 
     @Autowired
     private AuthenticationManager authenticationManager;

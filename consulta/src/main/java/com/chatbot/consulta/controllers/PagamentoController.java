@@ -53,4 +53,13 @@ public class PagamentoController {
         //TODO - retorna mensagem de sucesso
         return null;
     }
+    @PutMapping("/pagar/credito")
+    public ResponseEntity removerCartao(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
+                                           @RequestHeader("Authorization") String tokenHeader){
+        //TODO - verificar se cartao existe
+        //TODO - verificar tipo de cartao
+        //TODO - remover cartao do usuario
+        //TODO - retorna mensagem de sucesso
+        return null;
+    }
 }
