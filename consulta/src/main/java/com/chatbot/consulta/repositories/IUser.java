@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface IUser extends JpaRepository<User, UUID> {
+public interface IUser extends JpaRepository<User, Long> {
     UserDetails findByLogin(Object login);
 }

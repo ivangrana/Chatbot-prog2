@@ -28,7 +28,7 @@ public class TokenService {
             //token
             return JWT.create()
                     .withIssuer("seguro")
-                    .withSubject(user.getLogin())
+                    .withSubject(user.getEmail())
                     .withClaim("id_user", user.getId())
                     .withClaim("roles", roles)
                     .withExpiresAt(genAcessExpirationDate())

@@ -5,18 +5,37 @@ import com.chatbot.consulta.models.Especialidade;
 import com.chatbot.consulta.models.Medico;
 import com.chatbot.consulta.models.Paciente;
 import com.chatbot.consulta.models.User;
+import com.chatbot.consulta.repositories.IEspecialidade;
+import com.chatbot.consulta.repositories.IMedico;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AutenticacaoService {
 
-    public String criarNovoMedico(User usuario) {
-        return null;
+    @Autowired
+    private IEspecialidade especialidadeRepository;
+
+    @Autowired
+    private IMedico medicoRepository;
+
+    public String criarNovoMedico(Medico medico) {
+
+        medicoRepository.save(medico);
+
+        return "Médico " + medico.getNome() + " cadastrado com sucesso!";
     }
 
     public List<Especialidade> buscarEspecialidades(List<Long> idEspecialidades) {
-        return null;
+        List<Especialidade> response = new ArrayList<>();
+        for (Long id: idEspecialidades) {
+            Especialidade especialidade = especialidadeRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
+            response.add(especialidade);
+        }
+        return response;
     }
 
     public void emailJaCadastrado(String email) {

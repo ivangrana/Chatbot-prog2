@@ -19,5 +19,6 @@ public enum TipoUsuario {
     }
 
     public void isPaciente() {
+
     }
 }
