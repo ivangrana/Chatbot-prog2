@@ -22,22 +22,33 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "login")
-    private String login;
+    @Column(name = "nome")
+    private String nome;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "idade")
+    private int idade;
     @Column(name = "tipo_usuario")
-    private TipoUsuario userType;
+    private TipoUsuario tipoUsuario;
     @Column(name = "password")
     private String password;
+
+    public User(String nome, String email, TipoUsuario tipoUsuario, String password, int idade){
+        this.nome = nome;
+        this.email = email;
+        this.tipoUsuario = tipoUsuario;
+        this.password = password;
+        this.idade = idade;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> roles = new ArrayList<>();
 
-        if(userType == TipoUsuario.ADMIN) roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        if (userType.equals(TipoUsuario.PACIENTE)) roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
-        if (userType.equals(TipoUsuario.ADMIN_PACIENTE)) {
+        if(tipoUsuario == TipoUsuario.ADMIN) roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (tipoUsuario.equals(TipoUsuario.PACIENTE)) roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
+        if (tipoUsuario.equals(TipoUsuario.ADMIN_PACIENTE)) {
             roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
         }
@@ -51,6 +62,6 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return email;
     }
 }

@@ -1,6 +1,8 @@
 package com.chatbot.consulta.models;
 
+import com.chatbot.consulta.enums.TipoUsuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,4 +23,8 @@ public class Paciente extends User {
     @JoinColumn(name = "medico_id")
     private List<Consulta> consultas;
 
+    public Paciente(String name, String email, String password, int idade, String planoSaude) {
+        super(name, email, TipoUsuario.PACIENTE, password, idade);
+        this.planoSaude = planoSaude;
+    }
 }

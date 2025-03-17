@@ -1,5 +1,6 @@
 package com.chatbot.consulta.models;
 
+import com.chatbot.consulta.enums.TipoUsuario;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,6 +17,13 @@ import java.util.List;
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "id")
 public class Medico extends User {
+
+    // Construtor que recebe um objeto Usuario
+    public Medico(String nome, String email, String password, int idade, String crm, List<Especialidade> especialidades) {
+        super(nome, email, TipoUsuario.ADMIN, password, idade);
+        this.crm = crm;
+        this.especialidades = especialidades;
+    }
 
     @Column(name = "crm")
     private String crm;

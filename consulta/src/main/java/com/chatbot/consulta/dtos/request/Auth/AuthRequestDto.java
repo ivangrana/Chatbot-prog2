@@ -4,6 +4,8 @@ import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
@@ -19,4 +21,14 @@ public class AuthRequestDto {
 
     @NotNull(message = "Campo password não pode ser nulo.", groups = {LoginRequest.class, MedicoCreate.class, PacienteCreate.class})
     private String password;
+
+    @NotNull(message = "Campo crm não pode ser nulo.", groups = {MedicoCreate.class})
+    private String crm;
+
+    @NotNull(message = "Campo crm não pode ser nulo.", groups = {MedicoCreate.class})
+    private List<Long> idEspecialidades;
+
+    @NotNull(message = "Campo planoSaude não pode ser nulo.", groups = {PacienteCreate.class})
+    private String planoSaude;
+
 }
