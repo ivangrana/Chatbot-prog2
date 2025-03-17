@@ -16,7 +16,7 @@ public class ConsultaController {
 
     @PostMapping("/")
     public ResponseEntity createConsulta(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto){
-        //TODO - Verifica a disponibilidade do medico e choque de horario e consulta com status de vencido e ja aproveita para deletar da base de dados
+        //TODO - Verifica a disponibilidade do medico e choque de horario e consulta com status de vencido e ja aproveita para deletar da base de dadosg
         //TODO - Cria consulta com status de pagamento pendente
         //TODO - retorna dados de pagamento
         return null;

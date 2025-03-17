@@ -33,7 +33,7 @@ public class TokenService {
                     .withSubject(user.getEmail())
                     .withClaim("id_user", user.getId())
                     .withClaim("roles", roles)
-                    .withExpiresAt(genAcessExpirationDate())
+                    .withExpiresAt(genAccessExpirationDate())
                     .sign(algorithm);
         }catch (JWTCreationException exception){
             throw new RuntimeException("Erro ao gerar token", exception);//tratar essa exceção depois
@@ -68,11 +68,7 @@ public class TokenService {
             throw new RuntimeException("Erro ao decodificar token", exception);
         }
     }
-    private Instant genAcessExpirationDate(){
+    private Instant genAccessExpirationDate(){
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
-    }
-
-    private Instant genRefreshExpirationDate(){
-        return LocalDateTime.now().plusHours(168).toInstant(ZoneOffset.of("-03:00"));
     }
 }
