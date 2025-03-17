@@ -2,7 +2,6 @@ package com.chatbot.consulta.models;
 
 import com.chatbot.consulta.enums.TipoUsuario;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "id")
-public class Paciente extends User {
+public class Paciente extends Usuario {
     @Column(name = "plano_saude")
     private String planoSaude;
 
@@ -27,7 +26,7 @@ public class Paciente extends User {
         super(name, email, TipoUsuario.PACIENTE, password, idade);
         this.planoSaude = planoSaude;
     }
-    public Paciente(User usuario, String planoSaude) {
+    public Paciente(Usuario usuario, String planoSaude) {
         super(usuario.getId(), usuario.getNome(), usuario.getEmail(), TipoUsuario.PACIENTE, usuario.getPassword(), usuario.getIdade());
         this.planoSaude = planoSaude;
     }

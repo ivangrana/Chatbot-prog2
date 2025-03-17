@@ -4,11 +4,11 @@ import com.chatbot.consulta.dtos.response.BaseResponseDto;
 import com.chatbot.consulta.models.Especialidade;
 import com.chatbot.consulta.models.Medico;
 import com.chatbot.consulta.models.Paciente;
-import com.chatbot.consulta.models.User;
+import com.chatbot.consulta.models.Usuario;
 import com.chatbot.consulta.repositories.IEspecialidade;
 import com.chatbot.consulta.repositories.IMedico;
 import com.chatbot.consulta.repositories.IPaciente;
-import com.chatbot.consulta.repositories.IUser;
+import com.chatbot.consulta.repositories.IUsuario;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class AutenticacaoService {
     private IMedico medicoRepository;
 
     @Autowired
-    private IUser usuarioRepository;
+    private IUsuario usuarioRepository;
 
     @Autowired
     private IPaciente pacienteRepository;
@@ -52,12 +52,12 @@ public class AutenticacaoService {
         if (usuarioRepository.existsByEmail(email)) throw new RuntimeException("E-mail já cadastrado!");
     }
 
-    public User findUsuario(Long id) {
+    public Usuario findUsuario(Long id) {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
     }
 
-    public BaseResponseDto deleteCascadeUsuario(User usuario) {
+    public BaseResponseDto deleteCascadeUsuario(Usuario usuario) {
         // Remove o usuário (se os relacionamentos estiverem configurados corretamente, as dependências também serão removidas)
         usuarioRepository.delete(usuario);
         return  new BaseResponseDto("Usuário e seus dados relacionados foram excluídos com sucesso!");

@@ -9,7 +9,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.chatbot.consulta.models.User;
+import com.chatbot.consulta.models.Usuario;
 import com.auth0.jwt.algorithms.Algorithm;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class TokenService {
     @Value("${token.secret}")
     private String secret;
 
-    public String generateToken(User user){
+    public String generateToken(Usuario user){
         try{
             ArrayList<String> roles = new ArrayList<>();
             for(var role: user.getAuthorities()){roles.add(role.getAuthority());}
@@ -31,7 +31,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("chatbot")
                     .withSubject(user.getEmail())
-                    .withClaim("id_user", user.getId())
+                    .withClaim("id_usuario", user.getId())
                     .withClaim("roles", roles)
                     .withExpiresAt(genAccessExpirationDate())
                     .sign(algorithm);
@@ -56,13 +56,13 @@ public class TokenService {
             throw new RuntimeException("Token inválido: ID do usuário não é um número", e);
         }
     }
-    public User decodeToken(String token){
+    public Usuario decodeToken(String token){
         try{
             token = token.replace("Bearer ", "");
             Algorithm algorithm = Algorithm.HMAC256(secret);
             DecodedJWT jwt = JWT.decode(token);
-            User user = new User();
-            user.setId(jwt.getClaim("id_user").asLong());
+            Usuario user = new Usuario();
+            user.setId(jwt.getClaim("id_usuario").asLong());
             return user;
         } catch (JWTDecodeException exception){
             throw new RuntimeException("Erro ao decodificar token", exception);

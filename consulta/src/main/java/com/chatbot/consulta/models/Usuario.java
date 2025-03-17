@@ -12,13 +12,13 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "user", schema="public")
+@Table(name = "usuario")
 @Getter
 @Setter
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @EqualsAndHashCode(of = "id")
-public class User implements UserDetails {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,7 +33,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    public User(String nome, String email, TipoUsuario tipoUsuario, String password, int idade){
+    public Usuario(String nome, String email, TipoUsuario tipoUsuario, String password, int idade){
         this.nome = nome;
         this.email = email;
         this.tipoUsuario = tipoUsuario;
@@ -41,7 +41,7 @@ public class User implements UserDetails {
         this.idade = idade;
     }
 
-    public User(Long id, String nome, String email, TipoUsuario tipoUsuario, String password, int idade){
+    public Usuario(Long id, String nome, String email, TipoUsuario tipoUsuario, String password, int idade){
         this.id = id;
         this.nome = nome;
         this.email = email;

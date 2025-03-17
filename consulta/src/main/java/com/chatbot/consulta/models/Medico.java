@@ -1,12 +1,10 @@
 package com.chatbot.consulta.models;
 
 import com.chatbot.consulta.enums.TipoUsuario;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "id")
-public class Medico extends User {
+public class Medico extends Usuario {
 
     // Construtor que recebe um objeto Usuario
     public Medico(String nome, String email, String password, int idade, String crm, List<Especialidade> especialidades) {
@@ -26,7 +24,7 @@ public class Medico extends User {
     }
 
     // Construtor que recebe um objeto Usuario
-    public Medico(User usuario, String crm, List<Especialidade> especialidades) {
+    public Medico(Usuario usuario, String crm, List<Especialidade> especialidades) {
         super(usuario.getId(), usuario.getNome(), usuario.getEmail(), TipoUsuario.MEDICO, usuario.getPassword(), usuario.getIdade());
         this.crm = crm;
         this.especialidades = especialidades;

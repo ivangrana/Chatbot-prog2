@@ -1,6 +1,6 @@
 package com.chatbot.consulta.configs;
 
-import com.chatbot.consulta.repositories.IUser;
+import com.chatbot.consulta.repositories.IUsuario;
 import com.chatbot.consulta.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     TokenService tokenService;
     @Autowired
-    IUser userRepository;
+    IUsuario userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

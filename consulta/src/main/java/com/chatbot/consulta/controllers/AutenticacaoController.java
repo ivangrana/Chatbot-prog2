@@ -10,11 +10,10 @@ import com.chatbot.consulta.enums.TipoUsuario;
 import com.chatbot.consulta.models.Especialidade;
 import com.chatbot.consulta.models.Medico;
 import com.chatbot.consulta.models.Paciente;
-import com.chatbot.consulta.models.User;
+import com.chatbot.consulta.models.Usuario;
 import com.chatbot.consulta.services.AutenticacaoService;
 import com.chatbot.consulta.services.PagamentoService;
 import com.chatbot.consulta.services.TokenService;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,9 +27,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://0.0.0.0:8081/")
+//@CrossOrigin(origins = "http://0.0.0.0:8081/")
 @RestController
-@RequestMapping("auth")
+@RequestMapping("autenticacao")
 public class AutenticacaoController {
 
     @Autowired
@@ -44,6 +43,11 @@ public class AutenticacaoController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @PostMapping("/helloWorld")
+    public ResponseEntity<BaseResponseDto> helloWorld(){
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BaseResponseDto("Hello World!"));
+    }
+
     @PostMapping("/login")
     public ResponseEntity<BaseResponseDto> login(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto){
         // 1. Autenticação com email e senha fornecidos
@@ -52,7 +56,7 @@ public class AutenticacaoController {
         // 2. Define a autenticação no contexto de segurança
         SecurityContextHolder.getContext().setAuthentication(auth);
         // 5. Retorna o token gerado em um objeto de resposta
-        var token = tokenService.generateToken((User) auth.getPrincipal());
+        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BaseResponseDto(new LoginResponse(token)));
     }
 
@@ -97,10 +101,10 @@ public class AutenticacaoController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity deleteUser(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto,
+    public ResponseEntity deleteUser(@Validated(LoginRequest.class) AuthRequestDto authRequestDto,
                                      @RequestHeader("Authorization") String tokenHeader){
         //TODO - decodificar token - ok
-        User usuario = autenticacaoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
+        Usuario usuario = autenticacaoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
 
         //TODO - verificar pendencias de pagamentos - ok
         pagamentoService.existePendencias(usuario.getId());
@@ -110,9 +114,9 @@ public class AutenticacaoController {
     }
 
     @PutMapping("/medico")
-    public ResponseEntity<BaseResponseDto> createMedicoUsuarioExistente(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto){
+    public ResponseEntity<BaseResponseDto> createMedicoUsuarioExistente(@Validated(LoginRequest.class) AuthRequestDto authRequestDto){
         //TODO - decodificar token - ok
-        User usuario = autenticacaoService.findUsuario(authRequestDto.getIdUsuario());
+        Usuario usuario = autenticacaoService.findUsuario(authRequestDto.getIdUsuario());
 
         //TODO - verificar o tipo de usuario - ok
         usuario.getTipoUsuario().isMedico();
@@ -131,10 +135,10 @@ public class AutenticacaoController {
     }
 
     @PutMapping("/paciente")
-    public ResponseEntity<BaseResponseDto> createPacienteUsuarioExistente(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto,
+    public ResponseEntity<BaseResponseDto> createPacienteUsuarioExistente(@Validated(LoginRequest.class) AuthRequestDto authRequestDto,
                                                                        @RequestHeader("Authorization") String tokenHeader){
         //TODO - decodificar token - ok
-        User usuario = autenticacaoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
+        Usuario usuario = autenticacaoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
 
         //TODO - verificar o tipo de usuario - ok
         usuario.getTipoUsuario().isPaciente();

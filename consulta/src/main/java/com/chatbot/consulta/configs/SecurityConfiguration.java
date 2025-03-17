@@ -29,23 +29,15 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .cors(cors -> cors.configurationSource(request -> {
-                    var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://0.0.0.0:8081")); // Domínio do front-end
-                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE")); // Métodos permitidos
-                    corsConfig.setAllowedHeaders(List.of("*")); // Cabeçalhos permitidos
-                    corsConfig.setAllowCredentials(true); // Permite envio de cookies e credenciais
-                    return corsConfig;
-                }))
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/paciente").permitAll() //.hasAnyRole("ROLE_MEDICO")
-                        .requestMatchers(HttpMethod.POST, "/auth/medico").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/user").hasAnyRole("MEDICO", "PACIENTE")
-                        .requestMatchers(HttpMethod.PUT, "/auth/medico").hasAnyRole("MEDICO")
-                        .requestMatchers(HttpMethod.PUT, "/auth/paciente").hasAnyRole("MEDICO")
+                        .requestMatchers(HttpMethod.POST, "/autenticacao/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticacao/paciente").permitAll() //.hasAnyRole("ROLE_MEDICO")
+                        .requestMatchers(HttpMethod.POST, "/autenticacao/medico").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/autenticacao/usuario").permitAll() //.hasAnyRole("MEDICO", "PACIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/autenticacao/medico").permitAll() //.hasAnyRole("MEDICO")
+                        .requestMatchers(HttpMethod.PUT, "/autenticacao/paciente").permitAll() //.hasAnyRole("MEDICO")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
