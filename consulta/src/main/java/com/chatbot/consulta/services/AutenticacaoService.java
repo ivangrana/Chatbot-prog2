@@ -7,12 +7,17 @@ import com.chatbot.consulta.models.Paciente;
 import com.chatbot.consulta.models.User;
 import com.chatbot.consulta.repositories.IEspecialidade;
 import com.chatbot.consulta.repositories.IMedico;
-import jakarta.validation.constraints.NotNull;
+import com.chatbot.consulta.repositories.IPaciente;
+import com.chatbot.consulta.repositories.IUser;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
+@Transactional
 public class AutenticacaoService {
 
     @Autowired
@@ -21,10 +26,15 @@ public class AutenticacaoService {
     @Autowired
     private IMedico medicoRepository;
 
+    @Autowired
+    private IUser usuarioRepository;
+
+    @Autowired
+    private IPaciente pacienteRepository;
+
     public String criarNovoMedico(Medico medico) {
 
         medicoRepository.save(medico);
-
         return "Médico " + medico.getNome() + " cadastrado com sucesso!";
     }
 
@@ -39,21 +49,32 @@ public class AutenticacaoService {
     }
 
     public void emailJaCadastrado(String email) {
+        if (usuarioRepository.existsByEmail(email)) throw new RuntimeException("E-mail já cadastrado!");
     }
 
     public User findUsuario(Long id) {
-        return null;
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
     }
 
-    public String deleteCascadeUsuario(Long id) {
-        return null;
+    public BaseResponseDto deleteCascadeUsuario(User usuario) {
+        // Remove o usuário (se os relacionamentos estiverem configurados corretamente, as dependências também serão removidas)
+        usuarioRepository.delete(usuario);
+        return  new BaseResponseDto("Usuário e seus dados relacionados foram excluídos com sucesso!");
     }
 
     public BaseResponseDto criarMedicoUserAntigo(Medico medico) {
-        return null;
+        medicoRepository.save(medico);
+        return new BaseResponseDto("Médico criado com sucesso!");
     }
 
     public BaseResponseDto criarPacienteUserAntigo(Paciente paciente) {
-        return null;
+        usuarioRepository.save(paciente);
+        return new BaseResponseDto("Paciente criado com sucesso!");
+    }
+
+    public String criarNovoPaciente(Paciente paciente) {
+        pacienteRepository.save(paciente);
+        return "Paciente " + paciente.getNome() + " cadastrado com sucesso!";
     }
 }

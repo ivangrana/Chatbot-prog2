@@ -22,13 +22,16 @@ public class AuthRequestDto {
     @NotNull(message = "Campo password não pode ser nulo.", groups = {LoginRequest.class, MedicoCreate.class, PacienteCreate.class})
     private String password;
 
-    @NotNull(message = "Campo crm não pode ser nulo.", groups = {MedicoCreate.class})
+    @NotNull(message = "Campo crm não pode ser nulo.", groups = {MedicoCreate.class, MedicoExistenteCreate.class})
     private String crm;
 
-    @NotNull(message = "Campo crm não pode ser nulo.", groups = {MedicoCreate.class})
+    @NotNull(message = "Campo crm não pode ser nulo.", groups = {MedicoCreate.class, MedicoExistenteCreate.class})
     private List<Long> idEspecialidades;
 
-    @NotNull(message = "Campo planoSaude não pode ser nulo.", groups = {PacienteCreate.class})
+    @NotNull(message = "Campo planoSaude não pode ser nulo.", groups = {PacienteCreate.class, PacienteExistenteCreate.class})
     private String planoSaude;
+
+    @NotNull(message = "Campo idUsuario não pode ser nulo.", groups = {PacienteCreate.class, MedicoExistenteCreate.class})
+    private Long idUsuario;
 
 }

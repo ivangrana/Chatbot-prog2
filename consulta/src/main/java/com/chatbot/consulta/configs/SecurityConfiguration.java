@@ -1,6 +1,5 @@
 package com.chatbot.consulta.configs;
 
-import com.chatbot.consulta.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.context.annotation.Bean;
+
 import java.util.List;
 
 
@@ -25,7 +25,6 @@ import java.util.List;
 public class SecurityConfiguration {
     @Autowired
     SecurityFilter securityFilter;
-    TokenService tokenService;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -41,14 +40,12 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        //Sessao
-                        .requestMatchers(HttpMethod.POST, "/sessao/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/sessao/refresh-token").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/sessao/get/info/usuarios").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/sessao/get/roles").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/sessao/get/info/servidores").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/sessao/get/info/discentes").permitAll()
-
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/paciente").permitAll() //.hasAnyRole("ROLE_MEDICO")
+                        .requestMatchers(HttpMethod.POST, "/auth/medico").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/user").hasAnyRole("MEDICO", "PACIENTE")
+                        .requestMatchers(HttpMethod.PUT, "/auth/medico").hasAnyRole("MEDICO")
+                        .requestMatchers(HttpMethod.PUT, "/auth/paciente").hasAnyRole("MEDICO")
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
@@ -60,12 +57,17 @@ public class SecurityConfiguration {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(securityFilter.userDetailsService());
-        authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

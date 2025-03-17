@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
     @Id
@@ -54,10 +55,10 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> roles = new ArrayList<>();
 
-        if(tipoUsuario == TipoUsuario.ADMIN) roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if(tipoUsuario == TipoUsuario.MEDICO) roles.add(new SimpleGrantedAuthority("ROLE_MEDICO"));
         if (tipoUsuario.equals(TipoUsuario.PACIENTE)) roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
-        if (tipoUsuario.equals(TipoUsuario.ADMIN_PACIENTE)) {
-            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if (tipoUsuario.equals(TipoUsuario.MEDICO_PACIENTE)) {
+            roles.add(new SimpleGrantedAuthority("ROLE_MEDICO"));
             roles.add(new SimpleGrantedAuthority("ROLE_PACIENTE"));
         }
         return roles;

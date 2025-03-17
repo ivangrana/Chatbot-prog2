@@ -11,10 +11,12 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.chatbot.consulta.models.User;
 import com.auth0.jwt.algorithms.Algorithm;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 
 @Service
+@Transactional
 public class TokenService {
     @Value("${token.secret}")
     private String secret;
@@ -27,7 +29,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             //token
             return JWT.create()
-                    .withIssuer("seguro")
+                    .withIssuer("chatbot")
                     .withSubject(user.getEmail())
                     .withClaim("id_user", user.getId())
                     .withClaim("roles", roles)
@@ -37,16 +39,21 @@ public class TokenService {
             throw new RuntimeException("Erro ao gerar token", exception);//tratar essa exceção depois
         }
     }
-    public String validateToken(String token){
+    public Long validateToken(String token){
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
-                    .withIssuer("seguro")
+
+            String userId = JWT.require(algorithm)
+                    .withIssuer("chatbot")
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (JWTVerificationException exception){
-            return ""; //adicionar uma exceção aqui
+
+            return Long.parseLong(userId);
+        } catch (JWTVerificationException exception) {
+            throw new RuntimeException("Token inválido ou expirado", exception); // Lança exceção adequada
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Token inválido: ID do usuário não é um número", e);
         }
     }
     public User decodeToken(String token){

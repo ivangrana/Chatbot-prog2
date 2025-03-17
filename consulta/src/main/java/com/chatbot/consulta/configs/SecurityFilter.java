@@ -9,14 +9,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Component
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     TokenService tokenService;
@@ -29,11 +33,12 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if(token != null){
 
-            var login = tokenService.validateToken(token);
+            Long userId = tokenService.validateToken(token);
 
-            UserDetails user = userRepository.findByLogin(login);
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            UserDetails user = userRepository.findById(userId)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         }
@@ -42,7 +47,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
     @Bean
     public UserDetailsService userDetailsService() throws AuthenticationException {
-        return username -> userRepository.findByLogin(username);
+        return username -> userRepository.findByEmail(username);
     }
 
     private String recoverToken(HttpServletRequest request) {

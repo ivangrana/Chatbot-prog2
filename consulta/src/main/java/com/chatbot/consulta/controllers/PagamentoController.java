@@ -26,7 +26,7 @@ public class PagamentoController {
         //TODO - retorna mensagem de sucesso
         return null;
     }
-    @PostMapping("/tipo/credito")
+    @PostMapping("/tipo/debito")
     public ResponseEntity cadastrarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
                                                  @RequestHeader("Authorization") String tokenHeader){
         //TODO - autenticaar numero de cartao
@@ -35,7 +35,7 @@ public class PagamentoController {
         //TODO - retorna mensagem de sucesso
         return null;
     }
-    @PutMapping("/pagar/credito")
+    @PutMapping("/pagar/debito")
     public ResponseEntity pagarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
                                               @RequestHeader("Authorization") String tokenHeader){
         //TODO - verificar se cartao existe
@@ -53,7 +53,7 @@ public class PagamentoController {
         //TODO - retorna mensagem de sucesso
         return null;
     }
-    @PutMapping("/pagar/credito")
+    @DeleteMapping("/cartao")
     public ResponseEntity removerCartao(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
                                            @RequestHeader("Authorization") String tokenHeader){
         //TODO - verificar se cartao existe

@@ -20,14 +20,14 @@ public class Medico extends User {
 
     // Construtor que recebe um objeto Usuario
     public Medico(String nome, String email, String password, int idade, String crm, List<Especialidade> especialidades) {
-        super(nome, email, TipoUsuario.ADMIN, password, idade);
+        super(nome, email, TipoUsuario.MEDICO, password, idade);
         this.crm = crm;
         this.especialidades = especialidades;
     }
 
     // Construtor que recebe um objeto Usuario
     public Medico(User usuario, String crm, List<Especialidade> especialidades) {
-        super(usuario.getId(), usuario.getNome(), usuario.getEmail(), TipoUsuario.ADMIN, usuario.getPassword(), usuario.getIdade());
+        super(usuario.getId(), usuario.getNome(), usuario.getEmail(), TipoUsuario.MEDICO, usuario.getPassword(), usuario.getIdade());
         this.crm = crm;
         this.especialidades = especialidades;
     }
