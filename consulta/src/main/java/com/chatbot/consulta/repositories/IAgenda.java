@@ -1,11 +1,11 @@
 package com.chatbot.consulta.repositories;
 
-import com.chatbot.consulta.models.Calendario;
+import com.chatbot.consulta.models.Agenda;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface ICalendario extends JpaRepository<Calendario, UUID> {
+public interface IAgenda extends JpaRepository<Agenda, UUID> {
 }

@@ -22,11 +22,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", updatable = true)
+    @Column(name = "name")
     private String name;
-    @Column(name = "login", updatable = true)
+    @Column(name = "login")
     private String login;
-    @Column(name = "user_type")
+    @Column(name = "tipo_usuario")
     private TipoUsuario userType;
     @Column(name = "password")
     private String password;
