@@ -27,4 +27,8 @@ public class Paciente extends User {
         super(name, email, TipoUsuario.PACIENTE, password, idade);
         this.planoSaude = planoSaude;
     }
+    public Paciente(User usuario, String planoSaude) {
+        super(usuario.getId(), usuario.getNome(), usuario.getEmail(), TipoUsuario.PACIENTE, usuario.getPassword(), usuario.getIdade());
+        this.planoSaude = planoSaude;
+    }
 }

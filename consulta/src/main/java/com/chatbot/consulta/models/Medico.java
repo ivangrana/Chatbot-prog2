@@ -25,6 +25,13 @@ public class Medico extends User {
         this.especialidades = especialidades;
     }
 
+    // Construtor que recebe um objeto Usuario
+    public Medico(User usuario, String crm, List<Especialidade> especialidades) {
+        super(usuario.getId(), usuario.getNome(), usuario.getEmail(), TipoUsuario.ADMIN, usuario.getPassword(), usuario.getIdade());
+        this.crm = crm;
+        this.especialidades = especialidades;
+    }
+
     @Column(name = "crm")
     private String crm;
 

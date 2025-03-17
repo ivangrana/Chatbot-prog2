@@ -16,7 +16,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
     @Id
@@ -34,6 +33,15 @@ public class User implements UserDetails {
     private String password;
 
     public User(String nome, String email, TipoUsuario tipoUsuario, String password, int idade){
+        this.nome = nome;
+        this.email = email;
+        this.tipoUsuario = tipoUsuario;
+        this.password = password;
+        this.idade = idade;
+    }
+
+    public User(Long id, String nome, String email, TipoUsuario tipoUsuario, String password, int idade){
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.tipoUsuario = tipoUsuario;

@@ -14,4 +14,10 @@ public enum TipoUsuario {
     private TipoUsuario(int id){
         this.id = id;
     }
+
+    public void isMedico() {
+    }
+
+    public void isPaciente() {
+    }
 }
