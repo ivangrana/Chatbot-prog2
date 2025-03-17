@@ -1,4 +1,4 @@
 package com.chatbot.consulta.models;
 
-public class Agendamento {
+public class Consulta {
 }
