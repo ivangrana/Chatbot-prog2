@@ -1,7 +1,7 @@
 package com.chatbot.consulta.controllers;
 
-import com.chatbot.consulta.dtos.request.Auth.AuthRequestDto;
-import com.chatbot.consulta.dtos.request.Auth.MedicoCreate;
+import com.chatbot.consulta.dtos.request.autenticacao.AutenticacaoRequestDto;
+import com.chatbot.consulta.dtos.request.autenticacao.MedicoCreate;
 import com.chatbot.consulta.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class PagamentoController {
     private TokenService tokenService;
 
     @PostMapping("/tipo/credito")
-    public ResponseEntity cadastrarTipoCredito(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
+    public ResponseEntity cadastrarTipoCredito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
                                                  @RequestHeader("Authorization") String tokenHeader){
         //TODO - autenticaar numero de cartao
         //TODO - cadastrar tipo credito
@@ -26,7 +26,7 @@ public class PagamentoController {
         return null;
     }
     @PostMapping("/tipo/debito")
-    public ResponseEntity cadastrarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
+    public ResponseEntity cadastrarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
                                                  @RequestHeader("Authorization") String tokenHeader){
         //TODO - autenticaar numero de cartao
         //TODO - cadastrar tipo debito
@@ -35,7 +35,7 @@ public class PagamentoController {
         return null;
     }
     @PutMapping("/pagar/debito")
-    public ResponseEntity pagarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
+    public ResponseEntity pagarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
                                               @RequestHeader("Authorization") String tokenHeader){
         //TODO - verificar se cartao existe
         //TODO - verificar se solicitacao existe
@@ -44,7 +44,7 @@ public class PagamentoController {
         return null;
     }
     @PutMapping("/pagar/credito")
-    public ResponseEntity pagarTipoCredito(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
+    public ResponseEntity pagarTipoCredito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
                                           @RequestHeader("Authorization") String tokenHeader){
         //TODO - verificar se cartao existe
         //TODO - verificar se solicitacao existe
@@ -53,7 +53,7 @@ public class PagamentoController {
         return null;
     }
     @DeleteMapping("/cartao")
-    public ResponseEntity removerCartao(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto,
+    public ResponseEntity removerCartao(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
                                            @RequestHeader("Authorization") String tokenHeader){
         //TODO - verificar se cartao existe
         //TODO - verificar tipo de cartao

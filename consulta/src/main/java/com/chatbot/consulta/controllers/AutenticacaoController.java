@@ -1,9 +1,9 @@
 package com.chatbot.consulta.controllers;
 
-import com.chatbot.consulta.dtos.request.Auth.AuthRequestDto;
-import com.chatbot.consulta.dtos.request.Auth.LoginRequest;
-import com.chatbot.consulta.dtos.request.Auth.MedicoCreate;
-import com.chatbot.consulta.dtos.request.Auth.PacienteCreate;
+import com.chatbot.consulta.dtos.request.autenticacao.AutenticacaoRequestDto;
+import com.chatbot.consulta.dtos.request.autenticacao.LoginRequest;
+import com.chatbot.consulta.dtos.request.autenticacao.MedicoCreate;
+import com.chatbot.consulta.dtos.request.autenticacao.PacienteCreate;
 import com.chatbot.consulta.dtos.response.Auth.LoginResponse;
 import com.chatbot.consulta.dtos.response.BaseResponseDto;
 import com.chatbot.consulta.enums.TipoUsuario;
@@ -49,7 +49,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<BaseResponseDto> login(@Validated(LoginRequest.class) @RequestBody AuthRequestDto authRequestDto){
+    public ResponseEntity<BaseResponseDto> login(@RequestBody @Validated(LoginRequest.class) AutenticacaoRequestDto authRequestDto){
         // 1. Autenticação com email e senha fornecidos
         var usernamePassword = new UsernamePasswordAuthenticationToken(authRequestDto.getEmail(), authRequestDto.getPassword());
         Authentication auth = authenticationManager.authenticate(usernamePassword);
@@ -61,7 +61,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/medico")
-    public ResponseEntity createMedico(@Validated(MedicoCreate.class) @RequestBody AuthRequestDto authRequestDto){
+    public ResponseEntity createMedico(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto){
 
         //TODO - Verificar se usuario existe - ok
         autenticacaoService.emailJaCadastrado(authRequestDto.getEmail());
@@ -82,7 +82,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/paciente")
-    public ResponseEntity createPaciente(@Validated(PacienteCreate.class) @RequestBody AuthRequestDto authRequestDto){
+    public ResponseEntity createPaciente(@Validated(PacienteCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto){
 
         //TODO - Verificar se usuario existe - ok
         autenticacaoService.emailJaCadastrado(authRequestDto.getEmail());
@@ -101,7 +101,7 @@ public class AutenticacaoController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity deleteUser(@Validated(LoginRequest.class) AuthRequestDto authRequestDto,
+    public ResponseEntity deleteUser(@Validated(LoginRequest.class) AutenticacaoRequestDto authRequestDto,
                                      @RequestHeader("Authorization") String tokenHeader){
         //TODO - decodificar token - ok
         Usuario usuario = autenticacaoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
@@ -114,7 +114,7 @@ public class AutenticacaoController {
     }
 
     @PutMapping("/medico")
-    public ResponseEntity<BaseResponseDto> createMedicoUsuarioExistente(@Validated(LoginRequest.class) AuthRequestDto authRequestDto){
+    public ResponseEntity<BaseResponseDto> createMedicoUsuarioExistente(@Validated(LoginRequest.class) AutenticacaoRequestDto authRequestDto){
         //TODO - decodificar token - ok
         Usuario usuario = autenticacaoService.findUsuario(authRequestDto.getIdUsuario());
 
@@ -135,7 +135,7 @@ public class AutenticacaoController {
     }
 
     @PutMapping("/paciente")
-    public ResponseEntity<BaseResponseDto> createPacienteUsuarioExistente(@Validated(LoginRequest.class) AuthRequestDto authRequestDto,
+    public ResponseEntity<BaseResponseDto> createPacienteUsuarioExistente(@Validated(LoginRequest.class) AutenticacaoRequestDto authRequestDto,
                                                                        @RequestHeader("Authorization") String tokenHeader){
         //TODO - decodificar token - ok
         Usuario usuario = autenticacaoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());

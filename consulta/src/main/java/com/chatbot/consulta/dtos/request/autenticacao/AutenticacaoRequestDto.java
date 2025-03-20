@@ -1,4 +1,4 @@
-package com.chatbot.consulta.dtos.request.Auth;
+package com.chatbot.consulta.dtos.request.autenticacao;
 import lombok.Getter;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,10 +6,9 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
-public class AuthRequestDto {
+public class AutenticacaoRequestDto {
     @NotNull(message = "Campo name não pode ser nulo.", groups = {MedicoCreate.class, PacienteCreate.class})
     private String name;
 

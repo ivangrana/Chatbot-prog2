@@ -30,6 +30,16 @@ public class SecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/v2/api-docs",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**",
+                                "/swagger-resources",
+                                "/configuration/ui",
+                                "/configuration/security",
+                                "/webjars/**",
+                                "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticacao/helloWorld").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticacao/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticacao/paciente").permitAll() //.hasAnyRole("ROLE_MEDICO")
