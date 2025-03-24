@@ -1,14 +1,12 @@
 package com.chatbot.consulta.models;
 
 import com.chatbot.consulta.enums.StatusPagamento;
-import com.chatbot.consulta.enums.TipoPagamento;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "consulta")

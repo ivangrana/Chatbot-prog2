@@ -2,8 +2,14 @@ package com.chatbot.consulta.controllers;
 
 import com.chatbot.consulta.dtos.request.autenticacao.AutenticacaoRequestDto;
 import com.chatbot.consulta.dtos.request.autenticacao.MedicoCreate;
+import com.chatbot.consulta.dtos.request.pagamento.CreateCredito;
+import com.chatbot.consulta.dtos.request.pagamento.PagamentoRequestDto;
+import com.chatbot.consulta.models.Cartao;
+import com.chatbot.consulta.models.Usuario;
+import com.chatbot.consulta.services.PagamentoService;
 import com.chatbot.consulta.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,23 +22,24 @@ public class PagamentoController {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping("/tipo/credito")
-    public ResponseEntity cadastrarTipoCredito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
-                                                 @RequestHeader("Authorization") String tokenHeader){
-        //TODO - autenticaar numero de cartao
-        //TODO - cadastrar tipo credito
-        //TODO - pegar dados de usuario e salvar novo tipo de pagamento por usuario
-        //TODO - retorna mensagem de sucesso
-        return null;
-    }
-    @PostMapping("/tipo/debito")
-    public ResponseEntity cadastrarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
-                                                 @RequestHeader("Authorization") String tokenHeader){
-        //TODO - autenticaar numero de cartao
-        //TODO - cadastrar tipo debito
-        //TODO - pegar dados de usuario e salvar novo tipo de pagamento por usuario
-        //TODO - retorna mensagem de sucesso
-        return null;
+    @Autowired
+    private PagamentoService pagamentoService;
+
+    @PostMapping("/cartao")
+    public ResponseEntity cadastrar(@Validated(CreateCredito.class) @RequestBody PagamentoRequestDto pagamentoRequest,
+                                               @RequestHeader("Authorization") String tokenHeader){
+        //TODO - decodificar token - ok
+        Usuario usuario = pagamentoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
+        //TODO - cadastrar tipo credito e retorna mensagem de sucesso
+        Cartao cartao = new Cartao(
+                usuario,
+                pagamentoRequest.getNumeroCartao(),
+                pagamentoRequest.getNomeTitular(),
+                pagamentoRequest.getValidade(),
+                pagamentoRequest.getCvv(),
+                pagamentoRequest.getTipoCartao()
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(pagamentoService.criarNovoCartao(cartao));
     }
     @PutMapping("/pagar/debito")
     public ResponseEntity pagarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,

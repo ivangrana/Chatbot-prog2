@@ -3,12 +3,10 @@ package com.chatbot.consulta.dtos.request.consulta;
 import com.chatbot.consulta.models.Especialidade;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 public class ConsultaRequestDto {
     @NotNull(message = "Campo idConsulta não pode ser nulo.", groups = {UpdateData.class, CancelConsulta.class})
     private Long idConsulta;
