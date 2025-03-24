@@ -22,4 +22,5 @@ public class ConsultaRequestDto {
 
     @NotNull(message = "Campo especialidade não pode ser nulo.", groups = {ConsultaCreate.class})
     private Especialidade especialidade;
+
 }

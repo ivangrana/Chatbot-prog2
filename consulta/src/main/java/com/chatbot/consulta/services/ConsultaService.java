@@ -65,7 +65,7 @@ public class ConsultaService extends AutenticacaoService{
     }
 
     public void verificarEspecialidadeMedico(Medico medico, Especialidade especialidade) {
-        if (medico.getEspecialidades().contains(especialidade))
+        if (!medico.getEspecialidades().contains(especialidade))
             throw new RuntimeException("O médico não tem uma agenda disponível nessa data.");
 
     }
@@ -86,7 +86,7 @@ public class ConsultaService extends AutenticacaoService{
     }
 
     public void IsPacienteFromConsulta(Long idConsulta, Long idPaciente) {
-        if (consultaRepository.existsByIdAndPacienteId(idConsulta, idPaciente))
+        if (!consultaRepository.existsByIdAndPacienteId(idConsulta, idPaciente))
             throw new RuntimeException("❌ Consulta não encontrada ou não pertence a este paciente.");
     }
 

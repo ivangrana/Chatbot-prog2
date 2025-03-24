@@ -4,6 +4,8 @@ import com.chatbot.consulta.dtos.request.pagamento.PagamentoRequestDto;
 import com.chatbot.consulta.dtos.response.PagamentoResponseDto;
 import com.chatbot.consulta.enums.StatusPagamento;
 import com.chatbot.consulta.models.Cartao;
+import com.chatbot.consulta.models.Consulta;
+import com.chatbot.consulta.models.Usuario;
 import com.chatbot.consulta.repositories.ICartao;
 import com.chatbot.consulta.repositories.IConsulta;
 import com.chatbot.consulta.repositories.IMedico;
@@ -29,7 +31,21 @@ public class PagamentoService extends ConsultaService{
 
     public String criarNovoCartao(Cartao cartao) {
         cartaoRepository.save(cartao);
-
         return "✅ Cartão cadastrado com sucesso!";
+    }
+
+    public void existeCartaoByUser(Long idCartao, Usuario usuario) {
+        if (!cartaoRepository.existsByIdAndUsuario(idCartao, usuario)) throw new RuntimeException("❌ Não foi encontrado o cartão para esse usuário.");
+    }
+
+    public String pagarConsulta(Consulta consulta) {
+        consulta.setStatusPagamento(StatusPagamento.APROVADO);
+        consultaRepository.save(consulta);
+        return "✅ Pagamento da consulta realizado com sucesso!";
+    }
+
+    public String removerCartao(Long idCartao) {
+        cartaoRepository.deleteById(idCartao);
+        return "✅ Cartão removido com sucesso!";
     }
 }

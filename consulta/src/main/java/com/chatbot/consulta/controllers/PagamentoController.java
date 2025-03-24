@@ -4,7 +4,9 @@ import com.chatbot.consulta.dtos.request.autenticacao.AutenticacaoRequestDto;
 import com.chatbot.consulta.dtos.request.autenticacao.MedicoCreate;
 import com.chatbot.consulta.dtos.request.pagamento.CreateCredito;
 import com.chatbot.consulta.dtos.request.pagamento.PagamentoRequestDto;
+import com.chatbot.consulta.dtos.request.pagamento.RealizarPagamento;
 import com.chatbot.consulta.models.Cartao;
+import com.chatbot.consulta.models.Consulta;
 import com.chatbot.consulta.models.Usuario;
 import com.chatbot.consulta.services.PagamentoService;
 import com.chatbot.consulta.services.TokenService;
@@ -30,7 +32,7 @@ public class PagamentoController {
                                                @RequestHeader("Authorization") String tokenHeader){
         //TODO - decodificar token - ok
         Usuario usuario = pagamentoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
-        //TODO - cadastrar tipo credito e retorna mensagem de sucesso
+        //TODO - cadastrar tipo credito e retorna mensagem de sucesso - ok
         Cartao cartao = new Cartao(
                 usuario,
                 pagamentoRequest.getNumeroCartao(),
@@ -41,31 +43,31 @@ public class PagamentoController {
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(pagamentoService.criarNovoCartao(cartao));
     }
-    @PutMapping("/pagar/debito")
-    public ResponseEntity pagarTipoDebito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
-                                              @RequestHeader("Authorization") String tokenHeader){
-        //TODO - verificar se cartao existe
-        //TODO - verificar se solicitacao existe
-        //TODO - alterar status da solicitacao
-        //TODO - retorna mensagem de sucesso
-        return null;
-    }
-    @PutMapping("/pagar/credito")
-    public ResponseEntity pagarTipoCredito(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
+    @PutMapping("/pagar")
+    public ResponseEntity realizarPagamento(@Validated(RealizarPagamento.class) @RequestBody PagamentoRequestDto pagamentoRequest,
                                           @RequestHeader("Authorization") String tokenHeader){
-        //TODO - verificar se cartao existe
-        //TODO - verificar se solicitacao existe
-        //TODO - alterar status da solicitacao
-        //TODO - retorna mensagem de sucesso
-        return null;
+        //TODO - decodificar token - ok
+        Usuario usuario = pagamentoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
+
+        //TODO - verificar se cartao existe e se cartao é do usuario - ok
+        pagamentoService.existeCartaoByUser(pagamentoRequest.getIdCartao(), usuario);
+
+        //TODO - buscar consulta pelo id do paciente e id da consulta - ok
+        Consulta consulta = pagamentoService.findConsulta(usuario.getId(), pagamentoRequest.getIdConsulta());
+
+        //TODO - alterar status da solicitacao e retorna mensagem de sucesso - ok
+        return ResponseEntity.status(HttpStatus.OK).body(pagamentoService.pagarConsulta(consulta));
     }
     @DeleteMapping("/cartao")
-    public ResponseEntity removerCartao(@Validated(MedicoCreate.class) @RequestBody AutenticacaoRequestDto authRequestDto,
-                                           @RequestHeader("Authorization") String tokenHeader){
-        //TODO - verificar se cartao existe
-        //TODO - verificar tipo de cartao
-        //TODO - remover cartao do usuario
-        //TODO - retorna mensagem de sucesso
-        return null;
+    public ResponseEntity removerCartao(@Validated(RealizarPagamento.class) @RequestBody PagamentoRequestDto pagamentoRequest,
+                                        @RequestHeader("Authorization") String tokenHeader){
+        //TODO - decodificar token - ok
+        Usuario usuario = pagamentoService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
+
+        //TODO - verificar se cartao existe e se cartao é do usuario - ok
+        pagamentoService.existeCartaoByUser(pagamentoRequest.getIdCartao(), usuario);
+
+        //TODO - remover cartao do usuario e retorna mensagem de sucesso - ok
+        return ResponseEntity.status(HttpStatus.OK).body(pagamentoService.removerCartao(pagamentoRequest.getIdCartao()));
     }
 }

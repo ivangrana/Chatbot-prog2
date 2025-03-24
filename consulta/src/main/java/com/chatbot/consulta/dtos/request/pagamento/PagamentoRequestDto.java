@@ -8,7 +8,10 @@ import lombok.Getter;
 
 @Getter
 public class PagamentoRequestDto {
-    @NotNull(message = "O numero do cartão não pode ser nulo.", groups = {CreateCredito.class})
+    @NotNull(message = "O campo idCartao não pode ser nulo.", groups = {RealizarPagamento.class, RemoverCartao.class})
+    private Long idCartao;
+
+    @NotNull(message = "O campo numeroCartao não pode ser nulo.", groups = {CreateCredito.class})
     @Pattern(
             regexp = "\\d{16}",
             message = "O número do cartão deve conter exatamente 16 dígitos.",
@@ -16,10 +19,10 @@ public class PagamentoRequestDto {
     )
     private String numeroCartao;
 
-    @NotBlank(message = "O nome do titular não pode ser vazio.", groups = {CreateCredito.class})
+    @NotBlank(message = "O campo nomeTitular não pode ser vazio.", groups = {CreateCredito.class})
     private String nomeTitular;
 
-    @NotNull(message = "A validade não pode ser nula.", groups = {CreateCredito.class})
+    @NotNull(message = "O campo validade não pode ser nula.", groups = {CreateCredito.class})
     @Pattern(
             regexp = "(0[1-9]|1[0-2])/\\d{2}",
             message = "A validade deve estar no formato MM/YY.",
@@ -27,7 +30,7 @@ public class PagamentoRequestDto {
     )
     private String validade;
 
-    @NotNull(message = "O CVV não pode ser nulo.", groups = {CreateCredito.class})
+    @NotNull(message = "O campo CVV não pode ser nulo.", groups = {CreateCredito.class})
     @Pattern(
             regexp = "\\d{3}",
             message = "O CVV deve conter exatamente 3 dígitos.",
@@ -35,7 +38,10 @@ public class PagamentoRequestDto {
     )
     private String cvv;
 
-    @NotBlank(message = "O tipo do cartão não pode ser vazio.", groups = {CreateCredito.class})
+    @NotBlank(message = "O campo tipoCartao não pode ser vazio.", groups = {CreateCredito.class})
     private TipoCartao tipoCartao;
+
+    @NotNull(message = "O campo idConsulta não pode ser nulo.", groups = {RealizarPagamento.class})
+    private Long idConsulta;
 
 }
