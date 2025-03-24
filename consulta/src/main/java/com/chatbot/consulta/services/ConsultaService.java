@@ -80,12 +80,34 @@ public class ConsultaService extends AutenticacaoService{
                 consulta.getId(),
                 consulta.getPaciente().getNome(),
                 consulta.getAgendamento().getDataInicial(),
-                consulta.getStatusPagamento()
+                consulta.getStatusPagamento(),
+                "✅ Data da consulta atualizada com sucesso."
         );
     }
 
     public void IsPacienteFromConsulta(Long idConsulta, Long idPaciente) {
         if (consultaRepository.existsByIdAndPacienteId(idConsulta, idPaciente))
             throw new RuntimeException("❌ Consulta não encontrada ou não pertence a este paciente.");
+    }
+
+    public void verificarPrazoCancelamento(LocalDateTime dataConsulta) {
+        LocalDateTime prazoLimite = dataConsulta.minusHours(24);
+        if (LocalDateTime.now().isAfter(prazoLimite)) {
+            throw new RuntimeException("❌ O prazo para cancelar a consulta já expirou (24 horas antes).");
+        }
+    }
+
+    public ConsultaResponseDto deleteConsulta(Consulta consulta) {
+        consultaRepository.delete(consulta);
+        if (consulta.getStatusPagamento().equals(StatusPagamento.APROVADO))
+            consulta.setStatusPagamento(StatusPagamento.REEMBOLSADO);
+        else consulta.setStatusPagamento(StatusPagamento.CANCELADO);
+        return new ConsultaResponseDto(
+                consulta.getId(),
+                consulta.getPaciente().getNome(),
+                consulta.getAgendamento().getDataInicial(),
+                consulta.getStatusPagamento(),
+                "✅ Consulta cancelada com sucesso."
+        );
     }
 }

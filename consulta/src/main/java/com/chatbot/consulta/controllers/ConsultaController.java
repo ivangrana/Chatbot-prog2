@@ -65,19 +65,21 @@ public class ConsultaController {
     public ResponseEntity updateConsultaData(@Validated(UpdateData.class) ConsultaRequestDto consultaRequest, @RequestHeader("Authorization") String tokenHeader){
         //TODO - decodificar token - ok
         Usuario usuario = consultaService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
+
         //TODO - verificar se existe consulta com o id fornecido e com o paciente solicitante
         consultaService.IsPacienteFromConsulta(consultaRequest.getIdConsulta(), usuario.getId());
+
         //TODO - Verifica a disponibilidade do medico e choque de horario e consulta com status de vencido e ja aproveita para deletar da base de dados - ok
         consultaService.verificarAgendaMedico(consultaRequest.getIdMedico(), consultaRequest.getDataConsulta());  //ok
         consultaService.verificarConsultaPacienteByAgendamento(usuario.getId(), consultaRequest.getDataConsulta()); //ok
 
-        //TODO - buscar consulta pelo id do paciente e id da consulta
+        //TODO - buscar consulta pelo id do paciente e id da consulta - ok
        Consulta consulta = consultaService.findConsulta(usuario.getId(), consultaRequest.getIdConsulta());
 
         //TODO - verificar se a data da consulta é de no mínimo 24hrs antes do horário atual - ok
         consultaService.verificarPrazoCriacao(consultaRequest.getDataConsulta());
 
-        //TODO - atualiza a data se possivel e retorna dados da consulta
+        //TODO - atualiza a data se possivel e retorna dados da consulta - ok
         consulta.getAgendamento().setDataInicial(consultaRequest.getDataConsulta());
         return ResponseEntity.status(HttpStatus.OK).body(consultaService.atualizarDataConsulta(consulta));
     }
@@ -85,14 +87,18 @@ public class ConsultaController {
     public ResponseEntity removeConsulta(@Validated(CancelConsulta.class) ConsultaRequestDto consultaRequest, @RequestHeader("Authorization") String tokenHeader){
         //TODO - decodificar token - ok
         Usuario usuario = consultaService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
-        //TODO - verificar se existe consulta com o id fornecido e com o paciente solicitante
+
+        //TODO - verificar se existe consulta com o id fornecido e com o paciente solicitante - ok
         consultaService.IsPacienteFromConsulta(consultaRequest.getIdConsulta(), usuario.getId());
-        //TODO - buscar consulta por id
-        //TODO - Verifica se o prazo de cancelamento ja passou (umas 24hrs antes)
-        consultaService.verificarPrazoCancelamento(consultaRequest.getDataConsulta());
-        //TODO - remove a consulta se possivel
-        //TODO - retorna dados da consulta e cancelamento
-        return null;
+
+        //TODO - buscar consulta pelo id do paciente e id da consulta - ok
+        Consulta consulta = consultaService.findConsulta(usuario.getId(), consultaRequest.getIdConsulta());
+
+        //TODO - Verifica se o prazo de cancelamento ja passou (umas 24hrs antes) - ok
+        consultaService.verificarPrazoCancelamento(consulta.getAgendamento().getDataInicial());
+
+        //TODO - remove a consulta se possivel e  retorna dados da consulta e cancelamento - ok
+        return ResponseEntity.status(HttpStatus.OK).body(consultaService.deleteConsulta(consulta));
     }
 
 }
