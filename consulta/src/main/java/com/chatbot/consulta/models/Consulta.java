@@ -1,12 +1,14 @@
 package com.chatbot.consulta.models;
 
 import com.chatbot.consulta.enums.StatusPagamento;
+import com.chatbot.consulta.enums.TipoPagamento;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "consulta")
@@ -15,12 +17,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Consulta {
 
+    public static final int DAY = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "descricao")
-    private String descricao;
 
     @Column(name = "prazo_pagamento")
     private LocalDateTime prazoPagamento;
@@ -49,5 +50,15 @@ public class Consulta {
     @OneToOne
     @JoinColumn(name = "agenda_id", nullable = false, unique = true)
     private Agenda agendamento;
+
+    public Consulta(Medico medico, Paciente paciente, Especialidade especialidade, Agenda agenda){
+        this.medico = medico;
+        this.paciente = paciente;
+        this.especialidade = especialidade;
+        this.agendamento = agenda;
+        this.statusPagamento = StatusPagamento.PENDENTE;
+        this.prazoPagamento = LocalDateTime.now().plusDays(DAY);
+        this.prazoCancelamento = LocalDateTime.now().minusDays(DAY);
+    }
 
 }

@@ -21,13 +21,17 @@ public class Agenda {
     @Column(name = "data_inicial", nullable = false)
     private LocalDateTime dataInicial; // Data e hora específicos
 
-    @Column(name = "data_final", nullable = false)
-    private LocalDateTime dataFinal; // Data e hora específicos
-
     @Column(name = "tipo_agendamento", nullable = false)
     private TipoAgendamento tipoAgendamento;
 
     @ManyToOne
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
+
+    public Agenda(LocalDateTime dataInicial, TipoAgendamento tipoAgendamento, Medico medico){
+        this.dataInicial = dataInicial;
+        this.tipoAgendamento = tipoAgendamento;
+        this.medico = medico;
+    }
+
 }

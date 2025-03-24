@@ -4,7 +4,7 @@ import com.chatbot.consulta.dtos.request.autenticacao.AutenticacaoRequestDto;
 import com.chatbot.consulta.dtos.request.autenticacao.LoginRequest;
 import com.chatbot.consulta.dtos.request.autenticacao.MedicoCreate;
 import com.chatbot.consulta.dtos.request.autenticacao.PacienteCreate;
-import com.chatbot.consulta.dtos.response.Auth.LoginResponse;
+import com.chatbot.consulta.dtos.response.LoginResponseDto;
 import com.chatbot.consulta.dtos.response.BaseResponseDto;
 import com.chatbot.consulta.enums.TipoUsuario;
 import com.chatbot.consulta.models.Especialidade;
@@ -57,7 +57,7 @@ public class AutenticacaoController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         // 5. Retorna o token gerado em um objeto de resposta
         var token = tokenService.generateToken((Usuario) auth.getPrincipal());
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BaseResponseDto(new LoginResponse(token)));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BaseResponseDto(new LoginResponseDto(token)));
     }
 
     @PostMapping("/medico")

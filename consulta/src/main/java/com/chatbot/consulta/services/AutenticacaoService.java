@@ -10,6 +10,7 @@ import com.chatbot.consulta.repositories.IMedico;
 import com.chatbot.consulta.repositories.IPaciente;
 import com.chatbot.consulta.repositories.IUsuario;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +22,16 @@ import java.util.List;
 public class AutenticacaoService {
 
     @Autowired
-    private IEspecialidade especialidadeRepository;
+    protected IEspecialidade especialidadeRepository;
 
     @Autowired
-    private IMedico medicoRepository;
+    protected IMedico medicoRepository;
 
     @Autowired
-    private IUsuario usuarioRepository;
+    protected IUsuario usuarioRepository;
 
     @Autowired
-    private IPaciente pacienteRepository;
+    protected IPaciente pacienteRepository;
 
     public String criarNovoMedico(Medico medico) {
 
@@ -77,4 +78,5 @@ public class AutenticacaoService {
         pacienteRepository.save(paciente);
         return "Paciente " + paciente.getNome() + " cadastrado com sucesso!";
     }
+
 }
