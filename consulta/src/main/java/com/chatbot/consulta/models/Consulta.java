@@ -47,13 +47,13 @@ public class Consulta {
 
     @OneToOne
     @JoinColumn(name = "agenda_id", nullable = false, unique = true)
-    private Agenda agendamento;
+    private Agenda agenda;
 
     public Consulta(Medico medico, Paciente paciente, Especialidade especialidade, Agenda agenda){
         this.medico = medico;
         this.paciente = paciente;
         this.especialidade = especialidade;
-        this.agendamento = agenda;
+        this.agenda = agenda;
         this.statusPagamento = StatusPagamento.PENDENTE;
         this.prazoPagamento = LocalDateTime.now().plusDays(DAY);
         this.prazoCancelamento = LocalDateTime.now().minusDays(DAY);

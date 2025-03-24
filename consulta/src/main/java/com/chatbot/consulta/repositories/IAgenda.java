@@ -9,4 +9,6 @@ import java.time.LocalDateTime;
 @Repository
 public interface IAgenda extends JpaRepository<Agenda, Long> {
     boolean existsAgendaByMedicoIdAndDataInicialBetween(Long idMedico, LocalDateTime dataConsulta, LocalDateTime localDateTime);
+
+
 }

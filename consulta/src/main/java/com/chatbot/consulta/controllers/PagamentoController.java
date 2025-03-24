@@ -1,10 +1,6 @@
 package com.chatbot.consulta.controllers;
 
-import com.chatbot.consulta.dtos.request.autenticacao.AutenticacaoRequestDto;
-import com.chatbot.consulta.dtos.request.autenticacao.MedicoCreate;
-import com.chatbot.consulta.dtos.request.pagamento.CreateCredito;
-import com.chatbot.consulta.dtos.request.pagamento.PagamentoRequestDto;
-import com.chatbot.consulta.dtos.request.pagamento.RealizarPagamento;
+import com.chatbot.consulta.dtos.request.pagamento.*;
 import com.chatbot.consulta.models.Cartao;
 import com.chatbot.consulta.models.Consulta;
 import com.chatbot.consulta.models.Usuario;

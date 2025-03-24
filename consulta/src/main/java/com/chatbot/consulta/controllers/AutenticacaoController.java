@@ -1,9 +1,6 @@
 package com.chatbot.consulta.controllers;
 
-import com.chatbot.consulta.dtos.request.autenticacao.AutenticacaoRequestDto;
-import com.chatbot.consulta.dtos.request.autenticacao.LoginRequest;
-import com.chatbot.consulta.dtos.request.autenticacao.MedicoCreate;
-import com.chatbot.consulta.dtos.request.autenticacao.PacienteCreate;
+import com.chatbot.consulta.dtos.request.autenticacao.*;
 import com.chatbot.consulta.dtos.response.LoginResponseDto;
 import com.chatbot.consulta.dtos.response.BaseResponseDto;
 import com.chatbot.consulta.enums.TipoUsuario;

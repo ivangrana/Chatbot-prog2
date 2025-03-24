@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -56,7 +57,7 @@ public class ConsultaService extends AutenticacaoService{
     }
 
     public void verificarConsultaPacienteByAgendamento(Long idPaciente, LocalDateTime dataConsulta) {
-        if (consultaRepository.existsAgendaByPacienteIdAndDataInicialBetween(
+        if (consultaRepository.existsAgendaByPacienteIdAndAgendaDataInicialBetween(
                     idPaciente,
                     dataConsulta,
                     dataConsulta.plusHours(TipoAgendamento.CONSULTA.getHoras())
@@ -79,15 +80,21 @@ public class ConsultaService extends AutenticacaoService{
         return new ConsultaResponseDto(
                 consulta.getId(),
                 consulta.getPaciente().getNome(),
-                consulta.getAgendamento().getDataInicial(),
+                consulta.getAgenda().getDataInicial(),
                 consulta.getStatusPagamento(),
-                "✅ Data da consulta atualizada com sucesso."
+                "✅ Data da consulta atualizada com sucesso.",
+                consulta.getMedico().getNome()
         );
     }
 
     public void IsPacienteFromConsulta(Long idConsulta, Long idPaciente) {
         if (!consultaRepository.existsByIdAndPacienteId(idConsulta, idPaciente))
             throw new RuntimeException("❌ Consulta não encontrada ou não pertence a este paciente.");
+    }
+
+    public void existConsultaByPaciente(Long idPaciente) {
+        if (!consultaRepository.existsByPacienteId(idPaciente))
+            throw new RuntimeException("❌ Consultas não encontradas para o paciente.");
     }
 
     public void verificarPrazoCancelamento(LocalDateTime dataConsulta) {
@@ -105,9 +112,25 @@ public class ConsultaService extends AutenticacaoService{
         return new ConsultaResponseDto(
                 consulta.getId(),
                 consulta.getPaciente().getNome(),
-                consulta.getAgendamento().getDataInicial(),
+                consulta.getAgenda().getDataInicial(),
                 consulta.getStatusPagamento(),
-                "✅ Consulta cancelada com sucesso."
+                "✅ Consulta cancelada com sucesso.",
+                consulta.getMedico().getNome()
         );
+    }
+
+    public List<ConsultaResponseDto> findAllConsultas(Long idPaciente) {
+        // ✅ Buscar todas as consultas do usuário
+        List<Consulta> consultas = consultaRepository.findByPacienteId(idPaciente);
+        // ✅ Converter para DTO
+        return consultas.stream()
+                .map(consulta -> new ConsultaResponseDto(
+                        consulta.getId(),
+                        consulta.getPaciente().getNome(),
+                        consulta.getAgenda().getDataInicial(),
+                        consulta.getStatusPagamento(),
+                        "Aqui está as suas consultas:",
+                        consulta.getMedico().getNome()))
+                .toList();
     }
 }

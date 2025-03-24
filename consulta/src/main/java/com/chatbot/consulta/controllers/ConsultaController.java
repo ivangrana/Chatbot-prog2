@@ -1,12 +1,8 @@
 package com.chatbot.consulta.controllers;
 
-import com.chatbot.consulta.dtos.request.consulta.CancelConsulta;
-import com.chatbot.consulta.dtos.request.consulta.ConsultaCreate;
-import com.chatbot.consulta.dtos.request.consulta.ConsultaRequestDto;
-import com.chatbot.consulta.dtos.request.consulta.UpdateData;
+import com.chatbot.consulta.dtos.request.consulta.*;
 import com.chatbot.consulta.enums.TipoAgendamento;
 import com.chatbot.consulta.models.*;
-import com.chatbot.consulta.services.AutenticacaoService;
 import com.chatbot.consulta.services.ConsultaService;
 import com.chatbot.consulta.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +76,7 @@ public class ConsultaController {
         consultaService.verificarPrazoCriacao(consultaRequest.getDataConsulta());
 
         //TODO - atualiza a data se possivel e retorna dados da consulta - ok
-        consulta.getAgendamento().setDataInicial(consultaRequest.getDataConsulta());
+        consulta.getAgenda().setDataInicial(consultaRequest.getDataConsulta());
         return ResponseEntity.status(HttpStatus.OK).body(consultaService.atualizarDataConsulta(consulta));
     }
     @DeleteMapping("/")
@@ -95,10 +91,21 @@ public class ConsultaController {
         Consulta consulta = consultaService.findConsulta(usuario.getId(), consultaRequest.getIdConsulta());
 
         //TODO - Verifica se o prazo de cancelamento ja passou (umas 24hrs antes) - ok
-        consultaService.verificarPrazoCancelamento(consulta.getAgendamento().getDataInicial());
+        consultaService.verificarPrazoCancelamento(consulta.getAgenda().getDataInicial());
 
         //TODO - remove a consulta se possivel e  retorna dados da consulta e cancelamento - ok
         return ResponseEntity.status(HttpStatus.OK).body(consultaService.deleteConsulta(consulta));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity getAllConsulta(@RequestHeader("Authorization") String tokenHeader){
+        //TODO - decodificar token - ok
+        Usuario usuario = consultaService.findUsuario(tokenService.decodeToken(tokenHeader).getId());
+
+        //TODO - verificar se existe consulta com o id fornecido
+        consultaService.existConsultaByPaciente(usuario.getId());
+
+        return ResponseEntity.status(HttpStatus.OK).body(consultaService.findAllConsultas(usuario.getId()));
     }
 
 }
